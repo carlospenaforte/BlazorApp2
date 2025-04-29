@@ -7,16 +7,56 @@
 
 <p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="()=>currentCount++">Click me</button>
+
+
+<div class="m-4">
+	<input type="text" @bind="text" @bind:event="oninput" @bind:after="Search" />
+	<p>@text</p>
+</div>
+<p>@result</p>
+
+<div style="border: 1px solid black;" @onmouseover="MouseOver">
+	<p>@divText</p>
+</div>
+
 
 @code {
-    private int currentCount = 0;
+	private int currentCount = 0;
+	string text = "";
+	string divText = "";
+	string result = "";
 
-    [Parameter]
-    public int IncrementAmount { get; set; } = 1;
+	[Parameter]
+	public int IncrementAmount { get; set; } = 1;
 
-    private void IncrementCount()
-    {
-        currentCount+=IncrementAmount;
-    }
+	private void IncrementCount()
+	{
+		currentCount+=IncrementAmount;
+	}
+	private void HandleInput(ChangeEventArgs e)
+	{
+		text = (string)e.Value!;
+	}
+	private void MouseOver(MouseEventArgs e)
+	{
+		divText="You are hovering over the div";
+	}
+	private void HandlekeyDown(KeyboardEventArgs e)
+	{
+		text=e.Key;
+	}
+	private void HandleFocus(FocusEventArgs e)
+	{
+		text = "You are typing...";
+	}
+	private void HandleBlur(FocusEventArgs e)
+	{
+		text = "You are not typing. You have clicked away.";
+	}
+	async Task Search()
+	{
+		await Task.Delay(1000);
+		result = "150 results were found";
+	}
 }
